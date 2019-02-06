@@ -57,5 +57,15 @@ int main(){
     char target4[] = "Portland";
     strncat(target4, " , Oregon", 9);
     cout << target4 << endl;
-  ;
+
+    //atoi(cstring) used to convert a c-string to an integer;
+    char numberCString[] = "100";
+    int numInt = atoi(numberCString);
+    cout << "The number of numInt is: " << numInt << endl;
+
+    //atof(cstring) used to convert a c-string to a floating pt #
+    char numberCString2[] = "114.4";
+    double doubleNum = atof(numberCString2);
+    cout << "the number of doubleNum is: " << doubleNum << endl;
+
 }

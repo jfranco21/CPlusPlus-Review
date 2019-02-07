@@ -2,6 +2,8 @@
 #include <math.h>
 using namespace std;
 
+const int size6 = 8;
+
 //output array
 void outputArray(int array[], int size){
     for(int x = 0; x < size; x++){
@@ -71,12 +73,77 @@ void shellSort(int Nums[], int size){
     outputArray(Nums, size);
 }
 
-void Quicksort(int Nums[], int size){
+//Parition function for the quicksort
+int Partition(int Nums[], int start, int end){
+    int pivotVal = Nums[end];
+    int pIndex  = start;
+    for(int x = start; x < end; x++){
+        if(Nums[x] <= pivotVal){
+            //swaps the array value at x with array value at pIndex
+            int tempVal = Nums[x];
+            Nums[x] = Nums[pIndex];
+            Nums[pIndex] = tempVal;
 
+            pIndex++;
+        }
+    }
+    //swap the array value at the end with the array value at pIndex
+    int tempVal = Nums[pIndex];
+    Nums[pIndex] = Nums[end];
+    Nums[end] = tempVal;
+    return pIndex;
 }
 
-void Mergesort(int Nums[], int size){
+void Quicksort(int Nums[], int start, int end){
+    if(start < end){
+        int pIndex = Partition(Nums, start, end);
+        Quicksort(Nums, start, pIndex-1);
+        Quicksort(Nums, pIndex + 1, end);
+    }
+}
 
+void Merge(int leftArray[], int lSize, int rightArray[], int rSize, int Nums[], int size){
+     int i = 0, j = 0, k = 0;
+     while(i < lSize && j < rSize){
+         if(leftArray[i] <= rightArray[j]){
+             Nums[k] = leftArray[i];
+             i++;
+         }
+         else{
+             Nums[k] = rightArray[j];
+             j++;
+         }
+         k++;
+     }
+
+     while(i < lSize){
+         Nums[k] = leftArray[i];
+         i++;
+         k++;
+     }
+     while(j < rSize){
+         Nums[k] = rightArray[j];
+         j++;
+         k++;
+     }
+}
+
+void Mergesort(int Nums[], const int size){
+    int n = size;
+    if(n  > 1){
+        int mid = n / 2;
+        int leftArray[size6];
+        int rightArray[size6];
+        for(int x = 0; x < mid; x++){
+            leftArray[x] = Nums[x];
+        }
+        for(int x = mid; x < n; x++){
+            rightArray[x - mid] = Nums[x];
+        }
+        Mergesort(leftArray, mid);
+        Mergesort(rightArray, size - mid);
+        Merge(leftArray, mid, rightArray, n - mid, Nums, size);
+    }
 }
 
 void bubbleSort(int arr[], int size){
@@ -125,6 +192,8 @@ int main()
     cout << endl;
 
 
+
+
     /*const int size4 = 12;
     int array4[] = {24, 109, 149, 111, 34, 2, 24, 119, 122, 125, 27, 145};
     cout << "before using the shell sort" << endl;
@@ -133,7 +202,25 @@ int main()
     cout << "after shell sort" << endl;
     shellSort(array4, size4);*/
 
+    cout << endl;
+
+    const int size5 = 8;
+    int end = size5;
+    int array5[size5] = {7, 2, 1, 6, 8, 5, 3, 4};
+    cout << "before using the quick sort" << endl;
+    outputArray(array5, size5);
+    cout << "after quick sort" << endl;
+    Quicksort(array5, 0, end - 1);
+    outputArray(array5, size5);
 
 
+    int array6[size6] = {2, 4, 1, 6, 8, 5, 3, 7};
+    int arrayLeft[size6];
+    int arrayRight[size6];
+    cout << "before using the merge sort" << endl;
+    outputArray(array6, size6);
+    cout << "after using the merge sort" << endl;
+    Mergesort(array6, size6);
+    outputArray(array6, size6);
 
 }
